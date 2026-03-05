@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHSEBHALAK | أحسبهالك</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <style>
+        :root {
+            --bg-dark: #07090d;
+            --surface-glass: rgba(20, 26, 35, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.05);
+            --accent-primary: #00d2ff;
+            --accent-glow: #3a7bd5;
+            --text-main: #f0f3f8;
+            --text-dim: #94a3b8;
+            --whatsapp: #25D366;
+            --linkedin: #0077b5;
+            --email: #ea4335;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Particles Background */
+        .cosmic-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 30% 20%, rgba(0, 210, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(58, 123, 213, 0.08) 0%, transparent 40%),
+                radial-gradient(2px 2px at 10% 10%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 20% 50%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 80% 90%, rgba(255,255,255,0.7), rgba(0,0,0,0));
+            background-size: 100% 100%, 100% 100%, 150px 150px, 200px 200px, 300px 300px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .curved-monitor-frame {
+            width: 90vw;
+            height: 85vh;
+            max-width: 1600px;
+            border-radius: 20px;
+            border: 4px solid #1a202c;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), inset 0 0 100px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0 20px;
+            position: relative;
+        }
+
+        /* --- ADVANCED USER PROFILE & CONTACT LIST --- */
+        .profile-container {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border-glass);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-profile:hover {
+            background: rgba(0, 210, 255, 0.1);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
+
+        .user-photo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-glow);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .user-profile:hover .user-photo {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: block;
+            color: #fff;
+        }
+
+        .user-status {
+            font-size: 0.7rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        /* The Animated Contact Menu */
+        .contact-menu {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .profile-container:hover .contact-menu {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 30px;
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: fit-content;
+            align-self: flex-end;
+            transform: translateX(20px);
+            opacity: 0;
+        }
+
+        .profile-container:hover .contact-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        /* Staggered entrance for items */
+        .profile-container:hover .contact-item:nth-child(1) { transition-delay: 0.1s; }
+        .profile-container:hover .contact-item:nth-child(2) { transition-delay: 0.2s; }
+        .profile-container:hover .contact-item:nth-child(3) { transition-delay: 0.3s; }
+
+        .contact-item:hover {
+            color: #fff;
+            border-color: var(--item-color);
+            background: rgba(255,255,255,0.05);
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .contact-icon {
+            font-size: 20px !important;
+            color: var(--item-color);
+        }
+
+        /* --- HEADER STYLES --- */
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        h1 span.title-main {
+            background: linear-gradient(to right, #fff, var(--text-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 span.title-sub {
+            background: linear-gradient(to right, var(--text-dim), #64748b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 400;
+        }
+
+        /* --- PORTAL GRID & CARDS --- */
+        .portal-grid {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 0 40px;
+        }
+
+        .tool-card {
+            background-color: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            width: calc(100% / 7);
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 30px 15px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(0, 210, 255, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.15);
+        }
+
+        .glowing-circles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .circle {
+            position: absolute;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent-glow);
+            opacity: 0.8;
+        }
+
+        .circle-inner { width: 90px; height: 90px; animation: glow-pulse 2s infinite alternate; }
+        .circle-mid { width: 120px; height: 120px; opacity: 0.5; animation: glow-pulse-delayed 2s infinite alternate; }
+        .circle-outer { width: 150px; height: 150px; opacity: 0.2; }
+
+        .material-symbols-sharp {
+            font-size: 48px;
+            color: var(--accent-primary);
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 0 20px var(--accent-glow);
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+
+        .card-text-group {
+            text-align: center;
+            z-index: 2;
+            margin-top: 20px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        footer {
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 15px var(--accent-glow), inset 0 0 5px var(--accent-primary); opacity: 0.8; }
+            100% { box-shadow: 0 0 30px var(--accent-glow), inset 0 0 15px var(--accent-primary); opacity: 1; }
+        }
+
+        @keyframes glow-pulse-delayed {
+            0% { box-shadow: 0 0 10px var(--accent-glow); opacity: 0.5; }
+            100% { box-shadow: 0 0 20px var(--accent-glow); opacity: 0.7; }
+        }
+
+        @media (max-width: 1400px) {
+            h1 { font-size: 2.2rem; }
+            .tool-card { width: calc(100% / 5); }
+            .profile-container { top: 20px; right: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+
+    <div class="curved-monitor-frame">
+        <header>
+            <div class="profile-container">
+                <div class="user-profile">
+                    <div class="user-info">
+                        <span class="user-name">MrSha3ban</span>
+                        <span class="user-status">لمزيد من الادوات..</span>
+                    </div>
+                    <img src="https://raw.githubusercontent.com/MrSha3ban/Website/main/assets/img/alex-vidal.png" alt="MrSha3ban" class="user-photo">
+                </div>
+                
+                <div class="contact-menu">
+                    <a href="https://wa.me/201066800808" class="contact-item" style="--item-color: var(--whatsapp);" target="_blank">
+                        <span class="material-symbols-sharp contact-icon">chat</span>
+                        WhatsApp
+                    </a>
+                    <a href="https://www.linkedin.com/in/mr-sha3ban/" class="contact-item" style="--item-color: var(--linkedin);" target="_blank">
+                        <span class="material-symbols-sharp contact-icon">work</span>
+                        LinkedIn
+                    </a>
+                    <a href="mailto:mr.sha3ban@hotmail.com" class="contact-item" style="--item-color: var(--email);" target="_blank">
+                        <span class="material-symbols-sharp contact-icon">mail</span>
+                        Direct Email
+                    </a>
+                </div>
+            </div>
+
+            <h1>
+                <span class="title-main">AHSEBHALAK</span> 
+                <span class="title-sub">| أحسبهالك</span>
+            </h1>
+        </header>
+
+        <main class="portal-grid">
+            <a href="https://mrsha3ban.github.io/skills-analysis-platform/" class="tool-card">
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp">psychology_alt</span>
+                <div class="card-text-group">
+                    <p class="card-title">الموارد البشرية</p>
+                    <p class="card-desc">أداة تقييم الكفاءات واختبار المرشحين بالذكاء الاصطناعي</p>
+                </div>
+            </a>
+
+            <a href="https://mrsha3ban.github.io/plt_viewer/" class="tool-card">
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp">content_cut</span>
+                <div class="card-text-group">
+                    <p class="card-title">قسم القص</p>
+                    <p class="card-desc"> قرائة الباترونات مع امكانية تحويلها لصور و مراجعة التصميم قبل الطباعة</p>
+                </div>
+            </a>
+
+            <a href="https://mrsha3ban.github.io/AHSEBHALAK/" class="tool-card">
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp">local_shipping</span>
+                <div class="card-text-group">
+                    <p class="card-title">قسم اللوجستيك</p>
+                    <p class="card-desc">أداة محاكاة تحميل البضائع في الحاويات مع اختلاف مقاسات الكارتون</p>
+                </div>
+            </a>
+
+            <a href="https://mrsha3ban.github.io/AHSEBHALAK_1/" class="tool-card">
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp">apparel</span>
+                <div class="card-text-group">
+                    <p class="card-title">قسم الهندسة الصناعية</p>
+                    <p class="card-desc">برنامج تحليل وتصميم العمليات الصناعية  </p>
+                </div>
+            </a>
+
+            <a href="https://mrsha3ban.github.io/AHSEBHALAK_2/" class="tool-card">
+                <span class="badge">Developer View</span>
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp">invert_colors</span>
+                <div class="card-text-group">
+                    <p class="card-title">قسم الطباعة</p>
+                    <p class="card-desc">برنامج فصل الالوان واعداد الشابلونات للطباعة باستخدان نظام CMYK</p>
+                </div>
+            </a>
+
+            <div class="tool-card">
+                <span class="badge">soon</span>
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp" style="opacity: 0.3;">monitoring</span>
+                <div class="card-text-group" style="opacity: 0.3;">
+                    <p class="card-title">Analytics</p>
+                    <p class="card-desc">using advanced data analytics with AI</p>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <span class="badge">Admin</span>
+                <div class="glowing-circles">
+                    <div class="circle circle-outer"></div>
+                    <div class="circle circle-mid"></div>
+                    <div class="circle circle-inner"></div>
+                </div>
+                <span class="material-symbols-sharp" style="opacity: 0.3;">admin_panel_settings</span>
+                <div class="card-text-group" style="opacity: 0.3;">
+                    <p class="card-title">System Admin</p>
+                    <p class="card-desc">Internal security settings</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2026 AHSEBHALAK • Designed by MrSha3ban for Industrial Environments</p>
+        </footer>
+    </div>
+</body>
+</html>
